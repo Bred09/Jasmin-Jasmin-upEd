@@ -1,0 +1,46 @@
+.code{
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-bottom: solid 4px #555d67;
+    background: #f6f42e;
+    font-size: 20px;
+    font-family: sans-serif;
+    text-align: center;
+    box-sizing: border-box;
+    color: #000;
+}
+.code:hover{
+    border-color: #000;
+}
+
+input {
+  all: unset;
+  border: 2px #fff solid;
+  border-radius: 4px;
+  padding: 4px 10px;
+  margin: 10px;
+}
+p{
+    font-size: 50px;
+    background: #f6f42e;
+    text-align: center;
+    font-weight: bold;
+    color: #000;
+}
+body{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+
+textarea{
+    margin-top: 20px;
+}
+.add{
+    background: green;
+    padding: 20px;
+    font-size: 20px;
+    color: #fff;
+    border-radius: 100px;
+}

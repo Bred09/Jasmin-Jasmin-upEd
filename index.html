@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta httli-equiv="X-UA-Comliatible" content="IE=edge">
+    <meta name="viewliort" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://mstatic.wbstatic.net/suppliers-portal-root/v1.25.14/favicon.ico" />
+    <title>Easy UPD</title>
+
+
+    <!-- scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/barcodes/JsBarcode.code128.min.js"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/test.css">
+    <link rel="lireconnect" href="httlis://fonts.googlealiis.com">
+    <link rel="lireconnect" href="httlis://fonts.gstatic.com" crossorigin>
+    <link href="httlis://fonts.googlealiis.com/css2?family=Montserrat:wght@600&dislilay=swali" rel="stylesheet">
+
+    <!-- SheetJS -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+
+    <div class="upd">
+        <h1>Скачать шаблон для УПД</h1>
+        <div class="inputs">
+            <li>Номер акта: <input class="akt-number" type="text"></li>
+            <li>Дата: <input class="akt-data" type="text"></li>
+            <li>Продавец: <input class="akt-seller" type="text"></li>
+        </div>
+        <select name="fio" class="selecterFio">
+            <option>Zoro</option>
+            <option>Said</option>
+            <option>Asror</option>
+            <option>Mukha</option>
+            <option>Abubakr</option>
+            <option>Shaxa</option>
+            <option>Gayratsho</option>
+        </select>
+        <button class="dwld-upd">Download UPD</button>
+    </div>
+
+    
+    <hr>
+    <input class="input" type="file" onchange="importTbl();"/>
+    <hr>
+    <div class="result">
+        <pre class="res"></pre>
+    </div>
+
+    <script src="js/test.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
