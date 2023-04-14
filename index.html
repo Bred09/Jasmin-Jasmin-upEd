@@ -24,10 +24,23 @@
 </head>
 
 <body>
+    <h1>Скачать шаблон для УПД</h1>
 
+    <hr>
+    <div class="import-db">
+        <h2>1. Загрузите базу КМ [.CSV]</h2>
+        <input class="db-imp" type="file" />
+        <div class="db-res">Загружено КМ: <b class="km-cnt">0</b></div>
+    </div>
+    <hr>
+
+
+    <div class="import-akt">
+        <h2>2. Загрузите акт [act-income.XLSX]</h2>
+        <input class="akt-imp" type="file" />
+    </div>
 
     <div class="upd">
-        <h1>Скачать шаблон для УПД</h1>
         <div class="inputs">
             <li>Номер акта: <input class="akt-number" type="text"></li>
             <li>Дата: <input class="akt-data" type="text"></li>
@@ -43,16 +56,18 @@
             <option>Gayratsho</option>
         </select>
         <button class="dwld-upd">Download UPD</button>
+        <div class="db-res">Кол-во КМ в акте: <b class="akt-km-cnt">0</b></div>
+        <div class="db-res">Кол-во КМ найденных в базе: <b class="db-km-cnt">0</b></div>
     </div>
 
-    
-    <hr>
-    <input class="input" type="file" onchange="importTbl();"/>
     <hr>
     <div class="result">
-        <pre class="res"></pre>
+        <button class="copy-upd" onclick="copyClip();">Copy</button>
+        <textarea class="res" rows="50"></textarea>
     </div>
 
+    <script src="js/db.js"></script>
+    <script src="js/db-check.js"></script>
     <script src="js/test.js"></script>
     <script src="js/script.js"></script>
 </body>
