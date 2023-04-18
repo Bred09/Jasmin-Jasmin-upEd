@@ -14,12 +14,8 @@ $(".akt-imp").on("change", async function (e) {
 
   /* parse and load first worksheet */
   const wb = XLSX.read(data);
-  console.log("Загруженная таблица\nсо всеми данными");
-  console.log(wb);
 
   const ws = wb.Sheets[wb.SheetNames[0]];
-  console.log("Загруженная таблица\nс первым листом");
-  console.log(ws);
 
   // $(".res").html(XLSX.utils.sheet_to_html(ws, { id: "tabeller" }));
 
@@ -31,6 +27,32 @@ $(".akt-imp").on("change", async function (e) {
     $(aktData).val(ws.F3.h.match(/\d+/g).join("."));
     // Продавец
     $(aktSeller).val(ws.B5.h.slice(-13).slice(0, -1));
+  }
+  switch (aktSeller.val()){
+    case "667807515260":
+      $('.selecterFio').val('Zoro');
+      break;
+    case "667908209621":
+      $('.selecterFio').val('Said');
+      break;
+    case "667809154925":
+      $('.selecterFio').val('Asror');
+      break;
+    case "665913982569":
+      $('.selecterFio').val('Mukha');
+      break;
+    case "667808058520":
+      $('.selecterFio').val('Abubakr');
+      break;
+    case "667907925608":
+      $('.selecterFio').val('Shaxa');
+      break;
+    case "000000000000":
+      $('.selecterFio').val('Gayratsho');
+      break;
+    default:
+      alert('ИНН поставщика не найдено');
+      
   }
 
   // Edit \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -56,8 +78,6 @@ $(".akt-imp").on("change", async function (e) {
 
   // Выводит значение присустствующие в обеих массивах
   let result = [...new Set(db)].filter((item) => kmdb.includes(item));
-  console.log(db);
-  console.log(result);
   // Показываем сколько КМ в Акте(с анимацией)
   $({ numberValue: 0 }).animate(
     { numberValue: kmdb.length },
