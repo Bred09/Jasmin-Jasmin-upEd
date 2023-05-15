@@ -20,7 +20,7 @@ input {
   border: 2px #fff solid;
   border-radius: 4px;
   padding: 4px 10px;
-  margin: 10px;
+  margin: 10px 0;
 }
 p{
     font-size: 50px;
@@ -43,4 +43,39 @@ textarea{
     font-size: 20px;
     color: #fff;
     border-radius: 100px;
+}
+
+.logo{
+    color: #f6e700;
+    font-size: 50px;
+}
+.logo > b{
+    color: #fff;
+    border-bottom: solid 10px #560ea1;
+}
+
+.step{
+    color: #f6e700;
+}
+
+.footer{
+    margin: 50px 0;
+}
+
+/* Fix class */
+/* color */
+.c-green{
+    color: #009900 !important;
+}
+
+.c-chz{
+    color: #f6e700 !important;
+}
+
+.c-red{
+    color: rgb(255, 77, 77) !important;
+}
+/* border */
+.b-green{
+    border-color: #009900 !important;
 }
