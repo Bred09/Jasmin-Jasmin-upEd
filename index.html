@@ -1,112 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="windows-1251">
-    <meta httli-equiv="X-UA-Comliatible" content="IE=edge">
-    <meta name="viewliort" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://mstatic.wbstatic.net/suppliers-portal-root/v1.25.14/favicon.ico" />
+  <head>
+    <meta charset="utf-8" />
+    <meta httli-equiv="X-UA-Comliatible" content="IE=edge" />
+    <meta name="viewliort" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://mstatic.wbstatic.net/suppliers-portal-root/v1.25.14/favicon.ico"
+    />
     <title>Easy UPD</title>
-
 
     <!-- scripts -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- Styles -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/test.css">
-    <link rel="lireconnect" href="httlis://fonts.googlealiis.com">
-    <link rel="lireconnect" href="httlis://fonts.gstatic.com" crossorigin>
-    <link href="httlis://fonts.googlealiis.com/css2?family=Montserrat:wght@600&dislilay=swali" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/test.css" />
+    <link rel="lireconnect" href="httlis://fonts.googlealiis.com" />
+    <link rel="lireconnect" href="httlis://fonts.gstatic.com" crossorigin />
+    <link
+      href="httlis://fonts.googlealiis.com/css2?family=Montserrat:wght@600&dislilay=swali"
+      rel="stylesheet"
+    />
 
     <!-- SheetJS -->
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
+    <div class="check">
+      <form>
+        <input placeholder="Введите ключ" class="input-chk" type="text" />
+      </form>
+    </div>
     <div class="main">
-        <div class="one">
-            <h1><span class="logo">up<b>E</b>d</span></h1>
-            <img class="logo" src="img/chz.svg" height="100" alt="Честный ЗНАК">
-        </div>
-        <h2>апЕд: генератор шаблона УПД "ДОП"</h2>
+      <div class="one">
+        <h1><span class="logo">up<b>E</b>d</span></h1>
+        <img class="logo" src="img/chz.svg" height="100" alt="Честный ЗНАК" />
+      </div>
+      <h2>апЕд: генератор шаблона УПД "ДОП"</h2>
 
-        <hr>
-        <div class="import-db">
-            <h2 class="step">1. Загрузите базу КМ [.CSV]</h2>
-            <input class="db-imp" type="file" />
-            <div class="db-res">Загружено КМ: <b class="km-cnt">0</b></div>
-        </div>
-        <hr>
+      <hr />
+      <div class="import-db">
+        <h2 class="step">1. Загрузите базу КМ [.CSV]</h2>
+        <input class="db-imp" type="file" />
+        <div class="db-res">Загружено КМ: <b class="km-cnt">0</b></div>
+      </div>
+      <hr />
 
-
-        <div class="import-akt">
-            <h2 class="step">2. Заполните поля и загрузите акт [act-income.XLSX]</h2>
-        </div>
-        <div class="upd">
-            <div class="inputs">
-                <div>
-                    <h2>Обязательные</h2>
-                    <div class="split">
-                        <li>ИНН: <input class="akt-seller" type="text"></li>
-                        <li>ID: <input value="2LT-" class="userID" type="text"></li>
-                    </div>
-                </div>
-                <div>
-                    <h2>Авто</h2>
-                    <div class="split">
-                        <div class="one-c">
-                            <li>Номер акта: <input class="akt-number" type="text"></li>
-                            <li>Дата: <input class="akt-data" type="text"></li>
-                            <li>Фамилия: <input class="f" type="text"></li>
-                            <li>Имя: <input class="i" type="text"></li>
-                            <li>Отчество: <input class="o" type="text"></li>
-                            <li>ОГРН / ОГРНИП: <input class="ogrn" type="text"></li>
-                        </div>
-                        <div class="two-c">
-                            <li>Индекс: <input class="index" type="text"></li>
-                            <li>Код региона: <input class="regCode" type="text"></li>
-                            <li>Город: <input class="city" type="text"></li>
-                            <li>Улица: <input class="street" type="text"></li>
-                            <li>Дом: <input class="hNumb" type="text"></li>
-                            <li>Квартира: <input class="apart" type="text"></li>
-                        </div>
-                    </div>
-                </div>
+      <div class="import-akt">
+        <h2 class="step">
+          2. Заполните поля и загрузите акт [act-income.XLSX]
+        </h2>
+      </div>
+      <div class="upd">
+        <div class="inputs">
+          <div>
+            <h2>Обязательные</h2>
+            <div class="split">
+              <li>ИНН: <input class="akt-seller" type="text" /></li>
+              <li>ID: <input value="2LT-" class="userID" type="text" /></li>
             </div>
-        </div><br>
-        <hr>
-        <input class="akt-imp" type="file" />
-        <div class="db-res">Кол-во КМ в акте: <b class="akt-km-cnt">0</b></div>
-        <div class="db-res">Кол-во КМ найденных в базе: <b class="db-km-cnt">0</b></div>
-
-        <hr>
-        <h2 class="step">3. Сформируйте и скачайте шаблон</h2>
-        <div class="btn-box">
-            <a class="dwld-upd" tabindex="0">
-                <span class="icon">
-                    <svg>
-                        <path fill-rule="evenodd"
-                            d="M6 12a6 6 0 1112 0 6 6 0 01-12 0zm6-8a8 8 0 100 16 8 8 0 000-16zm1 5a1 1 0 10-2 0v2H9a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V9z">
-                        </path>
-                    </svg>
-                </span>
-
-                <span class="txt">Сформировать и скачать УПД</span>
-            </a>
+          </div>
+          <div>
+            <h2>Авто</h2>
+            <div class="split">
+              <div class="one-c">
+                <li>Номер акта: <input class="akt-number" type="text" /></li>
+                <li>Дата: <input class="akt-data" type="text" /></li>
+                <li>Фамилия: <input class="f" type="text" /></li>
+                <li>Имя: <input class="i" type="text" /></li>
+                <li>Отчество: <input class="o" type="text" /></li>
+                <li>ОГРН / ОГРНИП: <input class="ogrn" type="text" /></li>
+              </div>
+              <div class="two-c">
+                <li>Индекс: <input class="index" type="text" /></li>
+                <li>Код региона: <input class="regCode" type="text" /></li>
+                <li>Город: <input class="city" type="text" /></li>
+                <li>Улица: <input class="street" type="text" /></li>
+                <li>Дом: <input class="hNumb" type="text" /></li>
+                <li>Квартира: <input class="apart" type="text" /></li>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="footer">
-            <hr>
-            <h4>Я смог тебе помочь? Как насчет поддержки сайта? :)
-                <a class="phn" href="tel:+79630544335">+7 963 0544 335</a>
-                СБП (Сбербанк, Тинькофф)
-            </h4>
-        </div>
+      </div>
+      <br />
+      <hr />
+      <input class="akt-imp" type="file" />
+      <div class="db-res">Кол-во КМ в акте: <b class="akt-km-cnt">0</b></div>
+      <div class="db-res">
+        Кол-во КМ найденных в базе: <b class="db-km-cnt">0</b>
+      </div>
+
+      <hr />
+      <h2 class="step">3. Сформируйте и скачайте шаблон</h2>
+      <div class="btn-box">
+        <a class="dwld-upd" tabindex="0">
+          <span class="icon">
+            <svg>
+              <path
+                fill-rule="evenodd"
+                d="M6 12a6 6 0 1112 0 6 6 0 01-12 0zm6-8a8 8 0 100 16 8 8 0 000-16zm1 5a1 1 0 10-2 0v2H9a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V9z"
+              ></path>
+            </svg>
+          </span>
+
+          <span class="txt">Сформировать и скачать УПД</span>
+        </a>
+      </div>
+      <div class="footer">
+        <hr />
+        <h4>
+          Я смог тебе помочь? Как насчет поддержки сайта? :)
+          <a class="phn" href="tel:+79630544335">+7 963 0544 335</a>
+          СБП (Сбербанк, Тинькофф)
+        </h4>
+      </div>
     </div>
     <!-- <script language="javascript" src="js/cadesplugin_api.js"></script> -->
     <script src="js/db.js"></script>
     <script src="js/db-check.js"></script>
     <script src="js/test.js"></script>
     <script src="js/script.js"></script>
-</body>
-
+  </body>
 </html>

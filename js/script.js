@@ -1,3 +1,15 @@
+// Check licesense
+$("form").on('submit', function(e){
+  e.preventDefault()
+  let key = $('.input-chk');
+  if (key.val() !== "U68ZM-5PH7Q-BEK09") {
+    alert("Неверный!")
+  } else {
+    $('.check').css('display', 'none')
+  }
+})
+
+
 // // Переменные полей
 // let aktNumber = $(".akt-number");
 // let aktData = $(".akt-data");
