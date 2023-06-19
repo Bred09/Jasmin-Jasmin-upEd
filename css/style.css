@@ -32,6 +32,8 @@ p{
 body{
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
+    padding: 0;
+    margin: 0;
 }
 
 textarea{
@@ -78,6 +80,9 @@ textarea{
 /* border */
 .b-green{
     border-color: #009900 !important;
+}
+.b-red{
+    border-color: #ff4949 !important;
 }
 
 

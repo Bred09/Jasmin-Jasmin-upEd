@@ -1,241 +1,340 @@
 // Check licesense
-$("form").on('submit', function(e){
-  e.preventDefault()
-  let key = $('.input-chk');
+$(".input-chk").on("keyup focus blur", function () {
+  let key = $(".input-chk");
   if (key.val() !== "U68ZM-5PH7Q-BEK09") {
-    alert("Неверный!")
+    this.classList.add("b-red");
   } else {
-    $('.check').css('display', 'none')
+    $(".check").css("display", "none");
   }
-})
+});
+
+let userDB = [];
+let checkedDB = [];
+
+// Download BUTTON
+const updBtn = document.querySelector(".dwld-upd");
+
+// Generate last code function GN = generate name
+function gn() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
+}
+////////////
+
+// Global table \\
+let db = [];
+
+// Load DB
+$(".db-imp").on("change", async function (e) {
+  /* get data as an ArrayBuffer */
+  const file = e.target.files[0];
+  const data = await file.arrayBuffer();
+
+  /* parse and load first worksheet */
+  const wb = XLSX.read(data);
+
+  const ws = wb.Sheets[wb.SheetNames[0]];
+
+  let lastCeel = Number(ws["!ref"].split("AC")[1]);
+  let km = [];
+  for (let i = 3; i <= lastCeel; i++) {
+    km.push(ws["A" + i].v);
+  }
+
+  // Показываем сколько КМ загружено(с анимацией)
+  $({ numberValue: 0 }).animate(
+    { numberValue: km.length },
+    {
+      duration: 500, // Продолжительность анимации, где 500 - 0.5 одной секунды, то есть 500 миллисекунд
+      easing: "linear",
+
+      step: function (val) {
+        $(".km-cnt").html(Math.ceil(val)); // Блок, где необходимо сделать анимацию
+      },
+    }
+  );
+
+  db = km;
+});
+//
 
 
-// // Переменные полей
-// let aktNumber = $(".akt-number");
-// let aktData = $(".akt-data");
-// let aktSeller = $(".akt-seller");
+$(".akt-imp").on("change", async function (e) {
+  $(".res").html("");
+  /* get data as an ArrayBuffer */
+  const file = e.target.files[0];
+  const data = await file.arrayBuffer();
 
-// let a = document.querySelector(".akt-imp");
-// a.onchange = async function (e) {
-//   /* get data as an ArrayBuffer */
-//   const file = e.target.files[0];
-//   const data = await file.arrayBuffer();
+  /* parse and load first worksheet */
+  const wb = XLSX.read(data);
 
-//   /* parse and load first worksheet */
-//   const wb = XLSX.read(data);
-//   console.log("Загруженная таблица\nсо всеми данными");
-//   console.log(wb);
+  const ws = wb.Sheets[wb.SheetNames[0]];
 
-//   const ws = wb.Sheets[wb.SheetNames[0]];
-//   console.log("Загруженная таблица\nс первым листом");
-//   console.log(ws);
+  // add akt number
+  if (ws.A2.h) {
+    $(".akt-number").val(ws.A2.h.slice(-8));
+    // data
+    $(".akt-data").val(ws.F3.h.match(/\d+/g).join("."));
+    // INN
+    $(".akt-seller").val(ws.B5.h.slice(-13, -1));
+    for2();
+  }
 
-//   $(".res").html(XLSX.utils.sheet_to_html(ws, { id: "tabeller" }));
+  let kmdb = [];
+  // add KIZs to massive
+  Object.values(ws).filter((e) => {
+    if (/^010/.test(e.v)) {
+      kmdb.push(e.v);
+      return true;
+    }
+  });
 
-//   // Извлечение данных
-//   // Номер акта
-//   if (ws.A2.h) {
-//     $(aktNumber).val(ws.A2.h.slice(-8));
-//     // Дата
-//     $(aktData).val(ws.F3.h.match(/\d+/g).join("."));
-//     // Продавец
-//     $(aktSeller).val(ws.B5.h.slice(-13).slice(0, -1));
-//   }
+  let result = [...new Set(db)].filter((item) => kmdb.includes(item));
 
-//   // Edit \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  // Animation
+  $({ numberValue: 0 }).animate(
+    { numberValue: kmdb.length },
+    {
+      duration: 500,
+      easing: "linear",
 
-//   // Выводит значение присустствующие в обеих массивах
-//   //   let result = [...new Set(db)].filter((item) => userDB.includes(item));
+      step: function (val) {
+        $(".akt-km-cnt").html(Math.ceil(val));
+        if (kmdb.length == 0) {
+          $(".db-km-cnt").addClass("c-red");
+        } else {
+          $(".db-km-cnt").removeClass("c-red");
+          $(".akt-km-cnt").addClass("c-chz");
+        }
+      },
+    }
+  );
 
-//   let lastCeel = Number(ws["!ref"].split("H")[1]) - 1;
-//   console.log(lastCeel);
-//   let db = [];
-//   for (let i = 13; i < lastCeel; i++) {
-//     console.log(ws["G" + i].v);
-//   }
+  $({ numberValue: 0 }).animate(
+    { numberValue: result.length },
+    {
+      duration: 500,
+      easing: "linear",
 
-//   console.log(db);
+      step: function (val) {
+        $(".db-km-cnt").html(Math.ceil(val));
+        if (result.length == 0) {
+          $(".db-km-cnt").addClass("c-red");
+        } else {
+          $(".db-km-cnt").removeClass("c-red");
+          $(".db-km-cnt").addClass("c-green");
+        }
+      },
+    }
+  );
 
-//   // Получение КМ
-//   // Фильтрация массива на наличие в начале "010"
-//   const km = Object.values(ws).filter((e) => {
-//     if (/^010/.test(e.h)) return true;
-//     var size = Object.keys(e).length;
-//     console.log(size);
-//   });
-//   var size = Object.keys(ws).length;
-//   console.log(km);
-//   let gt = db;
-//   return gt;
-// };
+  checkedDB = result;
+});
 
-let updExample = `<Файл ИдФайл="ON_NSCHFDOPPRMARK_2BM-7721546864-2012052808220682662630000000000_2LT-11001484692_20230323_4a6f8e35-1013-4e99-95a1-a87068e5e16a" ВерсФорм="5.01" ВерсПрог="EDOLite 1.0">
-<СвУчДокОбор ИдОтпр="2LT-11001484692" ИдПол="2BM-7721546864-2012052808220682662630000000000">
-<СвОЭДОтпр НаимОрг="ООО "Оператор-ЦРПТ"" ИННЮЛ="7731376812" ИдЭДО="2LT"/>
-</СвУчДокОбор>
-<Документ КНД="1115131" Функция="ДОП" ПоФактХЖ="Документ об отгрузке товаров (выполнении работ), передаче имущественных прав (документ об оказании услуг)" НаимДокОпр="Документ об отгрузке товаров (выполнении работ), передаче имущественных прав (документ об оказании услуг)" ДатаИнфПр="23.03.2023" ВремИнфПр="03.42.32" НаимЭконСубСост="ШОКИРОВ СУЛАЙМОН РАЖАБАЛИЕВИЧ, ИНН: 667908209621">
-<СвСчФакт НомерСчФ="11242520-Kazan" ДатаСчФ="23.03.2023" КодОКВ="643">
-<СвПрод>
-<ИдСв>
-<СвИП ИННФЛ="667908209621">
-<ФИО Фамилия="Шокиров" Имя="Сулаймон" Отчество="Ражабалиевич"/>
-</СвИП>
-</ИдСв>
-<Адрес>
-<АдрРФ Индекс="453265" КодРегион="02" Город="Салават" Улица="Островского" Дом="48" Кварт="13"/>
-</Адрес>
-</СвПрод>
-<ГрузОт>
-<ОнЖе>он же</ОнЖе>
-</ГрузОт>
-<СвПокуп>
-<ИдСв>
-<СвЮЛУч НаимОрг="ООО "Вайлдберриз"" ИННЮЛ="7721546864" КПП="507401001"/>
-</ИдСв>
-<Адрес>
-<АдрРФ Индекс="142181" КодРегион="50" Город="Подольск" НаселПункт="Коледино" Улица="Индустриальный парк Коледино" Дом="6" Корпус="1"/>
-</Адрес>
-</СвПокуп>
-<ДопСвФХЖ1 ОбстФормСЧФ="4"/>
-</СвСчФакт>
-<ТаблСчФакт>
-<СведТов НомСтр="1" НаимТов="Кроссовки" ОКЕИ_Тов="796" КолТов="276" ЦенаТов="0" СтТовБезНДС="0.00" НалСт="без НДС" СтТовУчНал="0.00">
-<Акциз>
-<БезАкциз>без акциза</БезАкциз>
-</Акциз>
-<СумНал>
-<БезНДС>без НДС</БезНДС>
-</СумНал>
-<ДопСведТов НаимЕдИзм="шт">
-<НомСредИдентТов>
-</НомСредИдентТов>
-</ДопСведТов>
-</СведТов>
-<ВсегоОпл СтТовБезНДСВсего="0.00" СтТовУчНалВсего="0.00">
-<СумНалВсего>
-<СумНал>0.00</СумНал>
-</СумНалВсего>
-</ВсегоОпл>
-</ТаблСчФакт>
-<СвПродПер>
-<СвПер СодОпер="Товары переданы">
-<ОснПер НаимОсн="Акт приемки товара" НомОсн="11242520" ДатаОсн="15.03.2023"/>
-</СвПер>
-</СвПродПер>
-<Подписант ОблПолн="0" Статус="1" ОснПолн="Должностные обязанности">
-<ИП ИННФЛ="667908209621" СвГосРегИП="322028000212025">
-<ФИО Фамилия="ШОКИРОВ" Имя="СУЛАЙМОН" Отчество="РАЖАБАЛИЕВИЧ"/>
-</ИП>
-</Подписант>
-</Документ>
+// Logic
+
+updBtn.onclick = () => {
+  // Data inputs
+  let aktNumber = $(".akt-number");
+  let aktData = $(".akt-data");
+  let inn = $(".akt-seller");
+
+  let userID = $(".userID").val();
+  let f = $(".f").val();
+  let i = $(".i").val();
+  let o = $(".o").val();
+  let ogrn = $(".ogrn").val();
+  let index = $(".index").val();
+  let regCode = $(".regCode").val();
+  let city = $(".city").val();
+  let street = $(".street").val();
+  let hNumb = $(".hNumb").val();
+  let apart = $(".apart").val();
+
+  $sender = $(".selecterFio");
+  const today = new Date().toLocaleDateString();
+  const now = new Date().toLocaleTimeString().replace(/:/g, ".");
+  const incNumber = `${aktNumber.val()}-${checkedDB.length}`;
+
+  let fileLastID = gn();
+
+  // Template ////////////////
+  let tmp = `<?xml version="1.0" encoding="windows-1251"?>
+<Файл ИдФайл="ON_NSCHFDOPPRMARK_2BM-7721546864-2012052808220682662630000000000_${userID}_00000000_${fileLastID}" ВерсФорм="5.01" ВерсПрог="EDOLite 1.0">
+  <СвУчДокОбор ИдОтпр="${userID}" ИдПол="2BM-7721546864-2012052808220682662630000000000">
+    <СвОЭДОтпр НаимОрг="ООО 'Оператор-ЦРПТ'" ИННЮЛ="7731376812" ИдЭДО="2LT"/>
+  </СвУчДокОбор>
+  <Документ КНД="1115131" Функция="ДОП" ПоФактХЖ="Документ об отгрузке товаров (выполнении работ), передаче имущественных прав (документ об оказании услуг)" НаимДокОпр="Документ об отгрузке товаров (выполнении работ), передаче имущественных прав (документ об оказании услуг)" ДатаИнфПр="${today}" ВремИнфПр="${now}" НаимЭконСубСост="${f.toUpperCase()} ${i.toUpperCase()} ${o.toUpperCase()}, ИНН: ${inn.val()}">
+    <СвСчФакт НомерСчФ="${incNumber}" ДатаСчФ="${today}" КодОКВ="643">
+      <СвПрод>
+        <ИдСв>
+          <СвИП ИННФЛ="${inn.val()}">
+            <ФИО Фамилия="${i}" Имя="${f}" Отчество="${o}"/>
+          </СвИП>
+        </ИдСв>
+        <Адрес>
+          <АдрРФ Индекс="${index}" КодРегион="${regCode}" Город="${city}" Улица="${street}" Дом="${hNumb}" Кварт="${apart}"/>
+        </Адрес>
+      </СвПрод>
+      <ГрузОт>
+        <ОнЖе>он же</ОнЖе>
+      </ГрузОт>
+      <СвПокуп>
+        <ИдСв>
+          <СвЮЛУч НаимОрг="ООО 'Вайлдберриз'" ИННЮЛ="7721546864" КПП="507401001"/>
+        </ИдСв>
+        <Адрес>
+          <АдрРФ Индекс="142181" КодРегион="50" Город="Подольск" НаселПункт="Коледино" Улица="Индустриальный парк Коледино" Дом="6" Корпус="1"/>
+        </Адрес>
+      </СвПокуп>
+      <ДопСвФХЖ1 ОбстФормСЧФ="4"/>
+    </СвСчФакт>
+    <ТаблСчФакт>
+      <СведТов НомСтр="1" НаимТов="Товар" ОКЕИ_Тов="796" КолТов="${
+        checkedDB.length
+      }" ЦенаТов="0" СтТовБезНДС="0.00" НалСт="без НДС" СтТовУчНал="0.00">
+        <Акциз>
+          <БезАкциз>без акциза</БезАкциз>
+        </Акциз>
+        <СумНал>
+          <БезНДС>без НДС</БезНДС>
+        </СумНал>
+        <ДопСведТов НаимЕдИзм="шт">
+          <НомСредИдентТов>`;
+
+  let tmp2 = `
+          </НомСредИдентТов>
+        </ДопСведТов>
+      </СведТов>
+      <ВсегоОпл СтТовБезНДСВсего="0.00" СтТовУчНалВсего="0.00">
+        <СумНалВсего>
+          <СумНал>0.00</СумНал>
+        </СумНалВсего>
+      </ВсегоОпл>
+    </ТаблСчФакт>
+    <СвПродПер>
+      <СвПер СодОпер="Товары переданы">
+        <ОснПер НаимОсн="Акт приемки товара" НомОсн="${aktNumber.val()}" ДатаОсн="${aktData.val()}"/>
+      </СвПер>
+    </СвПродПер>
+    <Подписант ОблПолн="0" Статус="1" ОснПолн="Должностные обязанности">
+      <ИП ИННФЛ="${inn.val()}" СвГосРегИП="${ogrn}">
+        <ФИО Фамилия="${f.toUpperCase()}" Имя="${i.toUpperCase()}" Отчество="${o.toUpperCase()}"/>
+      </ИП>
+    </Подписант>
+  </Документ>
 </Файл>`;
+  ///////////
 
-let sendData = {
-  seller: 123,
+  //   Кодировщик
+  var encodeCP1251 = function (string) {
+    function encodeChar(c) {
+      var isKyr = function (str) {
+        return /[а-яё]/i.test(str);
+      };
+      var cp1251 = `ЂЃ‚ѓ„…†‡€‰Љ‹ЊЌЋЏђ‘’“”•–—�™љ›њќћџ ЎўЈ¤Ґ¦§Ё©Є«¬*®Ї°±Ііґµ¶·\
+ё№є»јЅѕїАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя`;
+      var p = isKyr(c) ? cp1251.indexOf(c) + 128 : c.charCodeAt(0);
+      var h = p.toString(16);
+      if (h == "a") {
+        h = "0A";
+      }
+      return "%" + h;
+    }
+    var res = "";
+    for (var i = 0; i < string.length; i++) {
+      res += encodeChar(string.charAt(i)); //ну или string[i]
+    }
+    return res;
+  };
+
+  let template = "";
+  template += tmp;
+  for (let elem of checkedDB) {
+    template += `
+            <КИЗ><![CDATA[${elem}]]></КИЗ>`;
+  }
+  template += tmp2;
+
+  updBtn.setAttribute(
+    "href",
+    "data:text/plain;charset=windows-1251," + encodeCP1251(template)
+  );
+  updBtn.setAttribute(
+    "download",
+    "ON_NSCHFDOPPRMARK_2BM-7721546864-2012052808220682662630000000000_" +
+      userID +
+      "_00000000_" +
+      fileLastID +
+      ".xml"
+  );
 };
-const fileID = "2LT-11001510992_20230321_fc888040-d05c-4cf6-85ac-31bcff5eb447";
-const sellerID = "2LT-11001510992";
-const DateInfTr = "21.03.2023";
-const TimeInfTr = "07.04.54";
-const NameEconEntDraf = "НАЗРИЕВ АСРОРИДИН ШУМКОРОВИЧ, ИНН: 667809154925";
-const NumberInv = "11126173-Ekb2398-try3";
-const DateInv = "21.03.2023";
-const innPP = "667809154925";
-const fioF = "НАЗРИЕВ ";
-const fioI = "АСРОРИДИН ";
-const fioO = "ШУМКОРОВИЧ";
-const addr = {
-  index: "620141",
-  codeRegion: "66",
-};
 
-let dataXML = `
-<Файл
-ИдФайл="ON_NSCHFDOPPRMARK_2BM-7721546864-2012052808220682662630000000000_${fileID}"
-ВерсФорм="5.01" ВерсПрог="EDOLite 1.0">
-<СвУчДокОбор
-ИдОтпр="${sellerID}"
-ИдПол="2BM-7721546864-2012052808220682662630000000000">
-<СвОЭДОтпр НаимОрг="ООО "Оператор-ЦРПТ"" ИННЮЛ="7731376812" ИдЭДО="2LT"/>
-</СвУчДокОбор>
-<Документ КНД="1115131" Функция="ДОП"
-ПоФактХЖ="Документ об отгрузке товаров (выполнении работ), передаче имущественных прав (документ об оказании услуг)" НаимДокОпр="Документ об отгрузке товаров (выполнении работ), передаче имущественных прав (документ об оказании услуг)"
-ДатаИнфПр="${DateInfTr}"
-ВремИнфПр="${TimeInfTr}"
-НаимЭконСубСост="${NameEconEntDraf}">
-<СвСчФакт
-НомерСчФ="${NumberInv}"
-ДатаСчФ="${DateInv}"
-КодОКВ="643">
-<СвПрод>
-<ИдСв>
-<СвИП ИННФЛ="${innPP}">
-<ФИО Фамилия="${fioF}"
-Имя="${fioI}"
-Отчество="${fioO}"/>
-</СвИП>
-</ИдСв>
-<Адрес>
-<АдрРФ
-Индекс=""
-КодРегион=""
-Город="Екатеринбург"
-Улица="Ольховская"
-Дом="27" Корпус="1"
-Кварт="97"/>
-</Адрес>
-</СвПрод>
-<ГрузОт>
-<ОнЖе>он же</ОнЖе>
-</ГрузОт>
-<СвПокуп>
-<ИдСв>
-<СвЮЛУч НаимОрг="ООО "Вайлдберриз"" ИННЮЛ="7721546864" КПП="507401001"/>
-</ИдСв>
-<Адрес>
-<АдрРФ Индекс="142181" КодРегион="50" Город="Подольск" НаселПункт="Коледино" Улица="Индустриальный парк Коледино" Дом="6" Корпус="1"/>
-</Адрес>
-</СвПокуп>
-<ДопСвФХЖ1 ОбстФормСЧФ="4"/>
-</СвСчФакт>
-<ТаблСчФакт>
-<СведТов НомСтр="1" НаимТов="КРОССОВКИ" ОКЕИ_Тов="796" КолТов="293" ЦенаТов="2100.00" СтТовБезНДС="0" НалСт="без НДС" СтТовУчНал="0.00">
-<Акциз>
-<БезАкциз>без акциза</БезАкциз>
-</Акциз>
-<СумНал>
-<БезНДС>без НДС</БезНДС>
-</СумНал>
-<ДопСведТов НаимЕдИзм="шт">
-<НомСредИдентТов>`;
+// Get seller info logic \\\
+var url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party";
+var token = "0ce3bccbb24f817783d78df59ab588af6643f301";
 
-// Done methods
+$(".akt-seller").on("input", function () {
+  if (this.value.length == 12) {
+    for2();
+  } else {
+    this.classList.remove("b-red");
+    this.classList.remove("b-green");
+  }
+});
+function for2() {
+  var queryValue = document.querySelector(".akt-seller");
 
-// Выводит лишь уникальные значения из массива
-// let userDB = [
-//   "0102900149320374215RVILzyBDVjC",
-//   '0102900149320015215qv"n3rDp:IUB',
-//   '0102900149320015215qv"n3rDp:INO',
-//   '0102900149320015215qv"n3rDp:IUB',
-//   '0102900149320015215qv"n3rDp:INO',
-// ];
-// let unic = [...new Set(userDB)];
-// console.log(unic);
+  var options = {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Token " + token,
+    },
+    body: JSON.stringify({ query: queryValue.value }),
+  };
 
-// Выводит значение присустствующие в обеих массивах
-// const db = [
-//   "0102900149319781215y3W:>UeQJhqm",
-//   "0102900149320008215RZaG7F1p%q7n",
-//   "0102900149320367215WMRqXECln(mB",
-//   "0102900149320374215RVILzyBDVjC",
-//   '0102900149320015215qv"n3rDp:IUB',
-// ];
-// let userDB = [
-//   "0102900149320374215RVILzyBDVjC",
-//   '0102900149320015215qv"n3rDp:IUB',
-//   '0102900149320015215qv"n3rDp:INO',
-// ];
+  fetch(url, options)
+    .then((response) => response.text())
+    .then((result) => {
+      let sellerData = JSON.parse(result);
 
-// let result = [...new Set(db)].filter(item => userDB.includes(item));
+      queryValue.classList.add("b-green");
+      $(".f").val(sellerData.suggestions[0].data.fio.surname);
+      $(".i").val(sellerData.suggestions[0].data.fio.name);
+      $(".o").val(sellerData.suggestions[0].data.fio.patronymic);
+      $(".index").val(sellerData.suggestions[0].data.address.data.postal_code);
+      $(".city").val(sellerData.suggestions[0].data.address.data.city);
+      $(".ogrn").val(sellerData.suggestions[0].data.ogrn);
+    })
+    .catch((error) => {
+      queryValue.classList.add("b-red");
+      console.log("error", error);
+    });
+}
+///
 
-// console.log(result)
+// check inputs
+var inputs = [].slice.call(document.querySelectorAll('input[type="text"]'));
+
+inputs.forEach(function (el) {
+  el.addEventListener("input", checkInputs, false);
+});
+function checkInputs() {
+  var empty = inputs.filter(function (el) {
+    return el.value.trim() === "";
+  }).length;
+  if (!empty) {
+    updBtn.classList.add("active");
+  } else {
+    updBtn.classList.remove("active");
+  }
+}
+checkInputs();
+//

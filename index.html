@@ -28,9 +28,13 @@
 
   <body>
     <div class="check">
-      <form>
-        <input placeholder="Введите ключ" class="input-chk" type="text" />
-      </form>
+      <input
+        autofocus
+        placeholder="Введите ключ"
+        class="input-chk"
+        type="text"
+        maxlength="17"
+      />
     </div>
     <div class="main">
       <div class="one">
@@ -49,15 +53,25 @@
 
       <div class="import-akt">
         <h2 class="step">
-          2. Заполните поля и загрузите акт [act-income.XLSX]
+          2. Загрузите акт и заполните поля [act-income.XLSX]
         </h2>
       </div>
+      <input class="akt-imp" type="file" />
+      <div class="db-res">Кол-во КМ в акте: <b class="akt-km-cnt">0</b></div>
+      <div class="db-res">
+        Кол-во КМ найденных в базе: <b class="db-km-cnt">0</b>
+      </div>
+
+      <hr />
+
       <div class="upd">
         <div class="inputs">
           <div>
             <h2>Обязательные</h2>
             <div class="split">
-              <li>ИНН: <input class="akt-seller" type="text" /></li>
+              <li>
+                ИНН: <input maxlength="12" class="akt-seller" type="text" />
+              </li>
               <li>ID: <input value="2LT-" class="userID" type="text" /></li>
             </div>
           </div>
@@ -73,9 +87,9 @@
                 <li>ОГРН / ОГРНИП: <input class="ogrn" type="text" /></li>
               </div>
               <div class="two-c">
+                <li>Город: <input class="city" type="text" /></li>
                 <li>Индекс: <input class="index" type="text" /></li>
                 <li>Код региона: <input class="regCode" type="text" /></li>
-                <li>Город: <input class="city" type="text" /></li>
                 <li>Улица: <input class="street" type="text" /></li>
                 <li>Дом: <input class="hNumb" type="text" /></li>
                 <li>Квартира: <input class="apart" type="text" /></li>
@@ -85,12 +99,6 @@
         </div>
       </div>
       <br />
-      <hr />
-      <input class="akt-imp" type="file" />
-      <div class="db-res">Кол-во КМ в акте: <b class="akt-km-cnt">0</b></div>
-      <div class="db-res">
-        Кол-во КМ найденных в базе: <b class="db-km-cnt">0</b>
-      </div>
 
       <hr />
       <h2 class="step">3. Сформируйте и скачайте шаблон</h2>
@@ -117,9 +125,6 @@
         </h4>
       </div>
     </div>
-    <!-- <script language="javascript" src="js/cadesplugin_api.js"></script> -->
-    <script src="js/db.js"></script>
-    <script src="js/db-check.js"></script>
     <script src="js/test.js"></script>
     <script src="js/script.js"></script>
   </body>
