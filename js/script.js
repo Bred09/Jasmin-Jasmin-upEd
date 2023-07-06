@@ -1,10 +1,15 @@
 // Check licesense
 $(".input-chk").on("keyup focus blur", function () {
-  let key = $(".input-chk");
-  if (key.val() !== "U68ZM-5PH7Q-BEK09") {
-    this.classList.add("b-red");
-  } else {
+  let key = document.querySelector(".input-chk");
+
+  let licKey = ["U68ZM-5PH7Q-BEK09", "KVZSJ-YFR65-DAVLA"].includes(key.value); //true
+
+  if (licKey === true) {
     $(".check").css("display", "none");
+    console.log(true);
+  } else {
+    this.classList.add("b-red");
+    console.log(false);
   }
 });
 
@@ -61,7 +66,6 @@ $(".db-imp").on("change", async function (e) {
   db = km;
 });
 //
-
 
 $(".akt-imp").on("change", async function (e) {
   $(".res").html("");
