@@ -1,15 +1,19 @@
 // Check licesense
+let secyr = false;
 $(".input-chk").on("keyup focus blur", function () {
   let key = document.querySelector(".input-chk");
 
   let licKey = ["U68ZM-5PH7Q-BEK09", "KVZSJ-YFR65-DAVLA"].includes(key.value); //true
 
-  if (licKey === true) {
+  let ip = "95.26.66.185";
+
+  if (licKey) {
+    secyr = true
     $(".check").css("display", "none");
-    console.log(true);
+    console.log(secyr);
   } else {
     this.classList.add("b-red");
-    console.log(false);
+    console.log(secyr);
   }
 });
 
@@ -177,7 +181,7 @@ updBtn.onclick = () => {
       <СвПрод>
         <ИдСв>
           <СвИП ИННФЛ="${inn.val()}">
-            <ФИО Фамилия="${i}" Имя="${f}" Отчество="${o}"/>
+            <ФИО Фамилия="${f}" Имя="${i}" Отчество="${o}"/>
           </СвИП>
         </ИдСв>
         <Адрес>
@@ -264,18 +268,21 @@ updBtn.onclick = () => {
   }
   template += tmp2;
 
-  updBtn.setAttribute(
-    "href",
-    "data:text/plain;charset=windows-1251," + encodeCP1251(template)
-  );
-  updBtn.setAttribute(
-    "download",
-    "ON_NSCHFDOPPRMARK_2BM-7721546864-2012052808220682662630000000000_" +
-      userID +
-      "_00000000_" +
-      fileLastID +
-      ".xml"
-  );
+  // Check active btn
+  if (updBtn.classList.contains("active")) {
+    updBtn.setAttribute(
+      "href",
+      "data:text/plain;charset=windows-1251," + encodeCP1251(template)
+    );
+    updBtn.setAttribute(
+      "download",
+      "ON_NSCHFDOPPRMARK_2BM-7721546864-2012052808220682662630000000000_" +
+        userID +
+        "_00000000_" +
+        fileLastID +
+        ".xml"
+    );
+  }
 };
 
 // Get seller info logic \\\
@@ -334,10 +341,19 @@ function checkInputs() {
   var empty = inputs.filter(function (el) {
     return el.value.trim() === "";
   }).length;
-  if (!empty) {
+  if (!empty && secyr) {
     updBtn.classList.add("active");
   } else {
     updBtn.classList.remove("active");
+
+    updBtn.removeAttribute(
+      "href",
+      "data:text/plain;charset=windows-1251,"
+    );
+    updBtn.removeAttribute(
+      "download",
+      "ON_NSCHFDOPPRMARK_2BM-7721546864-2012052808220682662630000000000_"
+    );
   }
 }
 checkInputs();
