@@ -3,7 +3,7 @@ let secyr = false;
 $(".input-chk").on("keyup focus blur", function () {
   let key = document.querySelector(".input-chk");
 
-  let licKey = ["U68ZM-5PH7Q-BEK09", "KVZSJ-YFR65-DAVLA"].includes(key.value); //true
+  let licKey = ["KVZSJ-YFR65-USER1", "KVZSJ-YFR65-DAVLA"].includes(key.value); //true
 
   let ip = "95.26.66.185";
 
