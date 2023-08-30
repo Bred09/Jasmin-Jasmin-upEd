@@ -8,7 +8,7 @@ $(".input-chk").on("keyup focus blur", function () {
   let ip = "95.26.66.185";
 
   if (licKey) {
-    secyr = true
+    secyr = true;
     $(".check").css("display", "none");
     console.log(secyr);
   } else {
@@ -145,6 +145,38 @@ $(".akt-imp").on("change", async function (e) {
 
 // Logic
 
+// get Current TIME in Moscow
+function getTime() {
+  const options = {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: "Europe/Moscow",
+  };
+
+  const formatter = new Intl.DateTimeFormat("ru-RU", options);
+  const now = new Date();
+
+  return formatter.format(now);
+}
+///
+
+// get Current DATE in Moscow
+function getDate() {
+  const options = {
+    timeZone: 'Europe/Moscow',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  };
+
+  const formatter = new Intl.DateTimeFormat('ru-RU', options);
+  const formattedDate = formatter.format(new Date());
+
+  return formattedDate;
+}
+///
+
 updBtn.onclick = () => {
   // Data inputs
   let aktNumber = $(".akt-number");
@@ -164,8 +196,8 @@ updBtn.onclick = () => {
   let apart = $(".apart").val();
 
   $sender = $(".selecterFio");
-  const today = new Date().toLocaleDateString();
-  const now = new Date().toLocaleTimeString().replace(/:/g, ".");
+  const today = getDate().replace(/\//g, ".");
+  const now = getTime().replace(/:/g, ".");
   const incNumber = `${aktNumber.val()}-${checkedDB.length}`;
 
   let fileLastID = gn();
@@ -346,10 +378,7 @@ function checkInputs() {
   } else {
     updBtn.classList.remove("active");
 
-    updBtn.removeAttribute(
-      "href",
-      "data:text/plain;charset=windows-1251,"
-    );
+    updBtn.removeAttribute("href", "data:text/plain;charset=windows-1251,");
     updBtn.removeAttribute(
       "download",
       "ON_NSCHFDOPPRMARK_2BM-7721546864-2012052808220682662630000000000_"
