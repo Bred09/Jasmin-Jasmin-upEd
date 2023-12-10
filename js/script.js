@@ -10,7 +10,6 @@ $(".input-chk").on("keyup focus blur", function () {
   if (licKey) {
     secyr = true;
     $(".check").css("display", "none");
-    console.log(secyr);
   } else {
     this.classList.add("b-red");
     console.log(secyr);
@@ -368,19 +367,15 @@ var inputs = [].slice.call(document.querySelectorAll('input[type="text"]'));
 
 inputs.forEach(function (el) {
   el.addEventListener("input", checkInputs, false);
-  console.log("Check1")
 });
 function checkInputs() {
-  console.log("Check2")
   var empty = inputs.filter(function (el) {
     return el.value.trim() === "";
   }).length;
   if (!empty && secyr) {
-    console.log("Check3")
     updBtn.classList.add("active");
   } else {
     updBtn.classList.remove("active");
-    console.log("Check4")
 
     updBtn.removeAttribute("href", "data:text/plain;charset=windows-1251,");
     updBtn.removeAttribute(
