@@ -213,7 +213,7 @@ updBtn.onclick = () => {
       <СвПрод>
         <ИдСв>
           <СвИП ИННФЛ="${inn.val()}">
-            <ФИО Фамилия="${f}" Имя="${i}" Отчество="${o}"/>
+            <ФИО Фамилия="${f}" Имя="${i}" "${o}"${o ? ' Отчество="' + o.toUpperCase()+'"' : ''}/>
           </СвИП>
         </ИдСв>
         <Адрес>
@@ -263,7 +263,7 @@ updBtn.onclick = () => {
     </СвПродПер>
     <Подписант ОблПолн="0" Статус="1" ОснПолн="Должностные обязанности">
       <ИП ИННФЛ="${inn.val()}" СвГосРегИП="${ogrn}">
-        <ФИО Фамилия="${f.toUpperCase()}" Имя="${i.toUpperCase()}" Отчество="${o.toUpperCase()}"/>
+        <ФИО Фамилия="${f.toUpperCase()}" Имя="${i.toUpperCase()}"${o ? ' Отчество="' + o.toUpperCase()+'"' : ''}/>
       </ИП>
     </Подписант>
   </Документ>
@@ -368,15 +368,19 @@ var inputs = [].slice.call(document.querySelectorAll('input[type="text"]'));
 
 inputs.forEach(function (el) {
   el.addEventListener("input", checkInputs, false);
+  console.log("Check1")
 });
 function checkInputs() {
+  console.log("Check2")
   var empty = inputs.filter(function (el) {
     return el.value.trim() === "";
   }).length;
   if (!empty && secyr) {
+    console.log("Check3")
     updBtn.classList.add("active");
   } else {
     updBtn.classList.remove("active");
+    console.log("Check4")
 
     updBtn.removeAttribute("href", "data:text/plain;charset=windows-1251,");
     updBtn.removeAttribute(
@@ -385,5 +389,6 @@ function checkInputs() {
     );
   }
 }
-checkInputs();
-//
+
+// Start checking function after load document
+window.onload = () => {checkInputs()}
